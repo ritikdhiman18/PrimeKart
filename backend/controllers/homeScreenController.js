@@ -1,6 +1,6 @@
 import HomeScreen from "../modals/homeScreenModal.js";
 //@desc GET homesrceen
-// route GET /api/homeScreen
+// route GET /api/
 // @access Public
 const getHomeScreen = async (req, res) => {
     try {
