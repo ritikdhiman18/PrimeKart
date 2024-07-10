@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "baseUrl": "https://primekart.onrender.com",
+        "baseUrl": "",
         "paths": {
             "@/*": [
                 "src/*"
