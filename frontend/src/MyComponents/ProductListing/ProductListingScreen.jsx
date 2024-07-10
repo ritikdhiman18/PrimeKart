@@ -1,4 +1,3 @@
-import Title from '@/MyComponents/Title'
 import { FiFilter } from "react-icons/fi";
 import { useNavigate } from 'react-router-dom';
 import { Slider } from "@/components/ui/slider"
@@ -6,10 +5,11 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Checkbox } from "@/components/ui/checkbox"
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetProductsByQueryQuery } from '@/Slices/productSlice';
-import { setFilters } from '../../Slices/features';
+import { setFilters } from '../../Slices/Reducers/features';
 import { useEffect, useState } from 'react';
-import { SkeletonCard } from '@/MyComponents/Skeleton/SkeletonCard';
 import ProductCard from '../ProductCard/productCard';
+import { SkeletonCard } from '../Skeleton/SkeletonCard';
+import Title from "../Title/Title";
 
 const ProductListingScreen = () => {
     const dispatch = useDispatch();
@@ -63,7 +63,7 @@ const ProductListingScreen = () => {
             </Title>
             <div className="search-Listing flex w-full gap-2 px-2">
                 {/* /////////////////facet-grid/////////////////////////// */}
-                <div className="hidden lg:block facet-container w-96 border-2">
+                <div className="hidden lg:block facet-container w-96 border-gray-400 border-2">
                     <div className='flex my-2 items-center justify-center font-bold text-xl gap-1'>
                         <span><FiFilter /></span>
                         <span>Filters</span>
@@ -143,7 +143,7 @@ const ProductListingScreen = () => {
                 </div>
                 {/* /////////////////search-grid/////////////////////////// */}
                 <div className=" w-full ">
-                    <div className="search-results border-2">
+                    <div className="search-results border-gray-400 border-2">
                         <ul className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-2 gap-2 lg:gap-4 min-h-44">
                             {isLoading || data == undefined ? (
                                 [...Array(4)].map((_, index) => <SkeletonCard key={index} />)
@@ -157,7 +157,7 @@ const ProductListingScreen = () => {
                             )}
                         </ul>
                     </div>
-                    <div className="pagination flex justify-center gap-10 mt-2 py-2 border-2">
+                    <div className="pagination flex justify-center gap-10 mt-2 py-2 border-gray-400 border-2">
                         <button className='bg-black_100 px-4 py-2 text-white rounded-md' onClick={handlePrevious}>Previous</button>
                         <button className='bg-black_100 px-10 py-2 text-white rounded-md' onClick={handleNext}>Next</button>
                     </div>

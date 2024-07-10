@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import userRoutes from './routes/userRoutes.js'
 import productRoutes from './routes/productRoutes.js'
+import homeScreenRoute from './routes/homeScreenRoute.js'
 import addToCart from './routes/atcRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import { errorHandler, notFound } from "./Middleware/errorMiddleware.js";
@@ -24,6 +25,7 @@ app.use(cors())
 connectDB();
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/users', userRoutes)
+app.use('/api', homeScreenRoute)
 app.use('/api', productRoutes)
 app.use('/api', orderRoutes)
 app.use('/api', addToCart)

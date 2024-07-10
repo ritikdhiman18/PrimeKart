@@ -12,13 +12,15 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useLogoutMutation } from '../Slices/apiSlice';
-import { logout } from '../Slices/authSlice';
+import { useLogoutMutation } from '../../Slices/apiSlice';
 import { RxAvatar } from "react-icons/rx";
 import { toast } from 'react-hot-toast';
-import { setIsLoginOpen } from '@/Slices/features';
+import { setIsLoginOpen } from '../../Slices/Reducers/features';
+import { SheetDescription } from "../../components/ui/sheet";
+import { logout } from "../../Slices/Reducers/authSlice";
 
 export function Sidebar() {
     const { userInfo } = useSelector((state) => state.auth);
@@ -40,7 +42,7 @@ export function Sidebar() {
             <SheetTrigger asChild>
                 <Button variant='mobileNav'><HiMenuAlt1 size={30} /></Button>
             </SheetTrigger>
-            <SheetContent className="flex flex-col gap-4">
+            <SheetContent className="flex flex-col gap-4" aria-describedby="alert-description">
                 {userInfo ? (<>
                     <SheetHeader>
                         <SheetClose asChild>
@@ -79,6 +81,10 @@ export function Sidebar() {
                             <SheetClose asChild><Link to="/">LOGOUT</Link></SheetClose>
                         </Button>
                     </SheetFooter>) : (<></>)}
+                <VisuallyHidden id="alert-description">
+                    <SheetTitle />
+                    <SheetDescription />
+                </VisuallyHidden>
 
             </SheetContent>
         </Sheet>

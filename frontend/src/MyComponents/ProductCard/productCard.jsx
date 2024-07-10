@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { TbShoppingBagPlus } from "react-icons/tb";
 import { FiHeart } from "react-icons/fi";
-import { useAddCartItemMutation } from '@/Slices/atcSlice';
 import toast from 'react-hot-toast';
 import { TbGridScan } from "react-icons/tb";
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsLoginOpen } from '@/Slices/features';
+import { setIsLoginOpen } from '../../Slices/Reducers/features';
+import { useAddCartItemMutation } from '../../Slices/atcSlice';
 
 
 const ProductCard = ({ product }) => {
@@ -30,14 +30,14 @@ const ProductCard = ({ product }) => {
         }
     }
     return (
-        <li key={product._id} data-product-id={product._id} className="Product-card bg-gray-200 rounded-md relative overflow-hidden border-black border-b-2 flex flex-col flex-1">
+        <div key={product._id} data-product-id={product._id} className="Product-card bg-[#f3f3f3] rounded-md relative overflow-hidden border-black border-b-2 flex flex-col flex-1">
             <Link to={product.href} className='flex flex-col flex-1 items-center'>
                 <div className="Product-Image flex justify-center w-[200px]">
                     <img src={product.image[0].url} alt={product.name} />
                 </div>
             </Link>
             <div className="Product-Content flex flex-col flex-1 bg-white text-black_100 font-bold p-1 lg:p-2 rounded-t-lg w-full ">
-                <div className="Product-Tags flex gap-1 flex-wrap mb-2 items-center justify-center">
+                <div className="Product-Tags flex justify-center gap-1 flex-wrap mb-2 items-center pl-2">
                     <TbGridScan />
                     {product.category.map((cat, index) => (
                         <span key={index} className='text-[8px] px-2 py-1 bg-[#f6f4ef] text-black rounded-lg'>
@@ -45,7 +45,7 @@ const ProductCard = ({ product }) => {
                         </span>
                     ))}
                 </div>
-                <div className="product-title text-sm lg:text-md text-black_100 flex flex-col flex-1 px-2">
+                <div className="product-title text-sm lg:text-md text-black_100 flex flex-col items-center flex-1 px-2">
                     {product.name}
                 </div>
                 <div className="Product-Price flex flex-col lg:flex-row gap-2 items-center justify-between mb-2 px-2">
@@ -72,7 +72,7 @@ const ProductCard = ({ product }) => {
                 <span className=''><FiHeart /></span>
             </div>
 
-        </li >
+        </div>
     );
 };
 

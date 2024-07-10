@@ -10,10 +10,10 @@ import {
     SheetHeader,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import { useGetCartItemsMutation } from "@/Slices/atcSlice";
 import { SkeletonCard } from "../Skeleton/SkeletonCard";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsLoginOpen } from "@/Slices/features";
+import { setIsLoginOpen } from "../../Slices/Reducers/features";
+import { useGetCartItemsMutation } from "../../Slices/atcSlice";
 
 const Cart = () => {
     const { userInfo } = useSelector((state) => state.auth);

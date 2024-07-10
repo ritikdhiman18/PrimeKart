@@ -26,7 +26,7 @@ const getAllProductsAdmin = asyncHandler(async (req, res) => {
 // @access Public
 const getAllProducts = asyncHandler(async (req, res) => {
     const limitPerPage = process.env.LimitPerPage;
-    // const productCount = await Product.countDocuments();
+    const productCount = await Product.countDocuments();
     const searchProducts = new ApiFeatures(Product.find(), req.query).search().filter().pagination(limitPerPage);
     const products = await searchProducts.query;
     if (products.length !== 0) {

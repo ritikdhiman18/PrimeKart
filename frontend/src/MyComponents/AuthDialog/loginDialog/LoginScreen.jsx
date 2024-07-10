@@ -1,12 +1,12 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Row, Col, Form, FormGroup } from "react-bootstrap";
+import { Form, FormGroup } from "react-bootstrap";
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { useDispatch, useSelector } from "react-redux";
-import { useLoginMutation } from "../Slices/apiSlice.js";
-import { setCredentials } from "../Slices/authSlice.js";
 import { toast } from "react-hot-toast";
-import { setIsSignupOpen, setIsLoginOpen } from '../Slices/features'
+import { setIsSignupOpen, setIsLoginOpen, setLoading } from '../../../Slices/Reducers/features.js'
+import { useLoginMutation } from "../../../Slices/apiSlice.js";
+import { setCredentials } from "../../../Slices/Reducers/authSlice.js";
 
 const LoginScreen = () => {
     const navigate = useNavigate();
@@ -23,12 +23,16 @@ const LoginScreen = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
+            dispatch(setLoading(true))
             const res = await login({ email, password }).unwrap();
             dispatch(setCredentials({ ...res }));
+            dispatch(setLoading(false))
             toast.success("Sign-In sucessfull.")
             dispatch(setIsLoginOpen(false));
+
         } catch (err) {
             toast.error("Enter correct details or check server.")
+            dispatch(setLoading(false))
         }
     }
     const switchToSignup = () => {

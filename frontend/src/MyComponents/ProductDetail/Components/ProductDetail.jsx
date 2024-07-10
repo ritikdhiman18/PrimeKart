@@ -4,10 +4,10 @@ import { MdVerified } from "react-icons/md";
 import { BsFillShieldLockFill } from "react-icons/bs";
 import { LuPackageCheck } from "react-icons/lu";
 import '@smastrom/react-rating/style.css'
-import { useAddCartItemMutation } from '@/Slices/atcSlice';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsLoginOpen } from '@/Slices/features';
+import { setIsLoginOpen } from '../../../Slices/Reducers/features';
+import { useAddCartItemMutation } from '../../../Slices/atcSlice';
 
 const ProductDetailGrid = ({ product }) => {
     const dispatch = useDispatch();

@@ -1,51 +1,46 @@
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Form, FormGroup } from "react-bootstrap";
-import { useRegisterMutation } from '../Slices/apiSlice.js'
+import { Button, Form, FormGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-hot-toast";
-import { setCredentials } from "../Slices/authSlice.js";
-import { setIsSignupOpen, setIsLoginOpen } from '../Slices/features.js'
-const RegisterScreen = () => {
-    const navigate = useNavigate();
+import { toast } from 'react-hot-toast';
+import { setCredentials } from "../../../Slices/Reducers/authSlice";
+import { useUpdateUserMutation } from "../../../Slices/apiSlice";
+
+const ProfileScreen = () => {
     const dispatch = useDispatch();
-    const [register, { isLoading }] = useRegisterMutation();
-    const { userInfo } = useSelector((state) => state.auth)
+    const { userInfo } = useSelector((state) => state.auth);
+    const [updateProfile, { isLoading }] = useUpdateUserMutation()
     useEffect(() => {
-        if (userInfo) {
-            navigate('/')
-        }
-    }, [navigate, userInfo])
+        setName(userInfo.name);
+        setEmail(userInfo.email);
+    }, [userInfo.setEmail, userInfo.setName])
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmpassword, setConfirmpassword] = useState('')
     const submitHandler = async (e) => {
+        debugger
         e.preventDefault();
-        if (password !== confirmpassword) {
-            toast.error("Password do not match.")
+        if (password !== confirmpassword || password === "") {
+            toast.error("Please enter password.", { autoClose: 800 })
         } else {
             try {
-                const res = await register({ name, email, password }).unwrap();
-                dispatch(setCredentials({ ...res }));
-                navigate('/');
-                dispatch(setIsSignupOpen(false));
-                toast.success("Sign-In sucessfull.")
+                const res = await updateProfile({
+                    _id: userInfo._id,
+                    name,
+                    email,
+                    password
+                }).unwrap();
+                dispatch(setCredentials({ ...res }))
+                toast.success('Profile Updated.', { autoClose: 800 })
             } catch (err) {
-                toast.error(err?.data?.message || err.message)
+                toast.error(err?.data?.message || err.message, { autoClose: 800 })
             }
         }
     }
-    const switchToLogin = () => {
-        dispatch(setIsSignupOpen(false));
-        setTimeout(() => dispatch(setIsLoginOpen(true), 200));
-    };
     return (
         <div>
-            <div className="text-center"> <h1 className="text-4xl font-bold ">Join PrimeKart</h1>
-                <p className="text-gray-500">Get ready to explore wide variety of Products.</p></div>
-
-            <Form onSubmit={submitHandler} className="font-bold">
+            <h1>Update Profile</h1>
+            <Form onSubmit={submitHandler}>
                 <FormGroup className="my-2" controlId="name">
                     <Form.Label>
                         Name
@@ -70,13 +65,12 @@ const RegisterScreen = () => {
                     </Form.Label>
                     <Form.Control type="password" value={confirmpassword} placeholder="Confirm password" onChange={(e) => setConfirmpassword(e.target.value)} />
                 </FormGroup>
-                <button type="submit" className="mt-3 bg-black_100 text-white p-2 w-full rounded-md text-lg">
-                    Sign Up
-                </button>
-                <p>Already have an account? <span className="text-blue-600 cursor-pointer" onClick={switchToLogin}>Login</span></p>
+                <Button type="submit" varient="primary" className="mt-3">
+                    Update
+                </Button>
             </Form>
         </div>
     )
 }
 
-export default RegisterScreen;
+export default ProfileScreen;

@@ -13,6 +13,9 @@ const initialStatedialog = {
     isLoginOpen: false,
     isSignupOpen: false
 };
+const initialStatedLoading = {
+    isLoading: false
+};
 
 const querySlice = createSlice({
     name: 'search',
@@ -39,11 +42,22 @@ const dialogSlice = createSlice({
         },
     }
 });
+const loadingSlice = createSlice({
+    name: 'Loading',
+    initialState: initialStatedLoading,
+    reducers: {
+        setLoading: (state, action) => {
+            state.isLoading = action.payload;
+        }
+    }
+});
 
 export const { setSearchQuery, setFilters } = querySlice.actions;
 export const { setIsLoginOpen, setIsSignupOpen } = dialogSlice.actions;
+export const { setLoading } = loadingSlice.actions;
 const rootReducer = {
     search: querySlice.reducer,
-    dialog: dialogSlice.reducer
+    dialog: dialogSlice.reducer,
+    loading: loadingSlice.reducer,
 };
 export default rootReducer;

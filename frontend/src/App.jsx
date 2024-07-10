@@ -1,10 +1,10 @@
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider, } from 'react-router-dom'
-import HomeScreen from './Screens/HomeScreen.jsx'
-import ProfileScreen from './Screens/ProfileScreen.jsx'
-import ProductListingScreen from './MyComponents/ProductListing/ProductListingScreen'
-import PrivateRoute from './MyComponents/PrivateRoute.jsx'
-import ProductDetailScreen from './MyComponents/ProductDetail/Page/ProductDetailScreen.jsx'
 import Layout from './MyComponents/Layout/Layout.jsx'
+import HomeScreen from './MyComponents/HomeScreen/Page/HomeScreen.jsx'
+import ProductDetailScreen from './MyComponents/ProductDetail/Page/ProductDetailScreen.jsx'
+import ProductListingScreen from './MyComponents/ProductListing/ProductListingScreen.jsx'
+import PrivateRoute from './MyComponents/PrivateRoute/PrivateRoute.jsx'
+import ProfileScreen from './MyComponents/AuthDialog/updateprofile/ProfileScreen.jsx'
 function App() {
 
   const router = createBrowserRouter(

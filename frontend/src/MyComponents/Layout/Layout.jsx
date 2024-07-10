@@ -1,10 +1,13 @@
 
 import { Toaster } from 'react-hot-toast';
-import Header from '../Header';
-import DialogRadix from '../Dialogradix';
+import Header from '../Header/Header';
+import DialogRadix from '../AuthDialog/Dialogradix';
 import Footer from '../Footer/Footer';
 import { Outlet } from 'react-router-dom';
+import Loader from '../Loader/Loader';
+import { useSelector } from 'react-redux';
 const Layout = () => {
+    const isLoading = useSelector((state) => state.loading.isLoading)
     return (
         <>
             <Header />
@@ -20,6 +23,7 @@ const Layout = () => {
                 duration: 1000
             }} />
             <DialogRadix />
+            <Loader isVisible={isLoading} />
             <Footer />
         </>
     )
