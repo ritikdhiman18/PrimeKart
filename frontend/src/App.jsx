@@ -6,8 +6,6 @@ import ProductListingScreen from './MyComponents/ProductListing/ProductListingSc
 import PrivateRoute from './MyComponents/PrivateRoute/PrivateRoute.jsx'
 import ProfileScreen from './MyComponents/AuthDialog/updateprofile/ProfileScreen.jsx'
 function App() {
-  const baseurl = import.meta.env.VITE_BASE_API_URL
-  console.log(baseurl);
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path='/' element={<Layout />}>
