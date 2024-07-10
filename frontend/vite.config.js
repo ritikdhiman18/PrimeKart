@@ -12,11 +12,11 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    proxy: {
-      '/api': {
-        target: 'https://primekart.onrender.com',
-        changeOrigin: true
-      }
-    }
+    // proxy: {
+    //   '/api': {
+    //     target: 'https://primekart.onrender.com',
+    //     changeOrigin: true
+    //   }
+    // }
   }
 })
