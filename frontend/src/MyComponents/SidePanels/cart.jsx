@@ -16,6 +16,7 @@ import { SkeletonCard } from "../Skeleton/SkeletonCard";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsLoginOpen } from "../../Slices/Reducers/features";
 import { useGetCartItemsMutation } from "../../Slices/atcSlice";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 const Cart = () => {
     const { userInfo } = useSelector((state) => state.auth);
