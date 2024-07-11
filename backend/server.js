@@ -7,7 +7,7 @@ import addToCart from './routes/atcRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import { errorHandler, notFound } from "./Middleware/errorMiddleware.js";
 import connectDB from "./config/db.js";
-import cookiParser from 'cookie-parser'
+import cookieParser from 'cookie-parser';
 import cors from 'cors'
 import path from 'path';
 
@@ -19,10 +19,26 @@ process.on("uncaughtException", () => {
 dotenv.config();
 const port = process.env.PORT || 5000;
 const app = express();
-app.use(cookiParser())
-app.use(express.json())
-app.use(cors())
 connectDB();
+app.use(cookieParser())
+app.use(express.json())
+const allowedOrigins = [
+    'https://primekart.onrender.com',
+    'http://localhost:5173',
+    'http://localhost:5000',
+    'http://localhost:3000',
+];
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
+    credentials: true,
+}));
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/users', userRoutes)
 app.use('/api', homeScreenRoute)
