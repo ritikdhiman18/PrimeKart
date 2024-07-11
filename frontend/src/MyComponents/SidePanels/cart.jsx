@@ -6,8 +6,10 @@ import {
     Sheet,
     SheetClose,
     SheetContent,
+    SheetDescription,
     SheetFooter,
     SheetHeader,
+    SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
 import { SkeletonCard } from "../Skeleton/SkeletonCard";
@@ -32,7 +34,7 @@ const Cart = () => {
                     <Button variant='mobileNav' onClick={handelCart}><RiShoppingCartFill size={20} /></Button>
                 </SheetTrigger>
 
-                <SheetContent className="flex flex-col gap-4 p-0" side={"right"}>
+                <SheetContent className="flex flex-col gap-4 p-0" side={"right"} aria-describedby="alert-description">
                     <SheetHeader>
                         <div className="atc-topbar bg-[#f6f4ef] px-4 py-3 font-bold">
                             <h1>Your Cart</h1>
@@ -99,6 +101,10 @@ const Cart = () => {
                             </div>
                         </>
                     )}
+                    <VisuallyHidden id="alert-description">
+                        <SheetTitle />
+                        <SheetDescription />
+                    </VisuallyHidden>
                 </SheetContent>
             </Sheet>
         </>
