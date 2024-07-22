@@ -34,8 +34,6 @@ const addToCart = asyncHandler(async (req, res) => {
     });
 });
 
-
-
 //@desc get user cartItems
 // route Post /api/cartItems
 // @acess public

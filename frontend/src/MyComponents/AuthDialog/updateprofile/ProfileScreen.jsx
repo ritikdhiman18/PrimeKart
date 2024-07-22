@@ -8,7 +8,7 @@ import { useUpdateUserMutation } from "../../../Slices/customHooks/authHooks";
 const ProfileScreen = () => {
     const dispatch = useDispatch();
     const { userInfo } = useSelector((state) => state.auth);
-    const [updateProfile, { isLoading }] = useUpdateUserMutation()
+    const updateProfile = useUpdateUserMutation()
     useEffect(() => {
         setName(userInfo.name);
         setEmail(userInfo.email);
@@ -24,12 +24,12 @@ const ProfileScreen = () => {
             toast.error("Please enter password.", { autoClose: 800 })
         } else {
             try {
-                const res = await updateProfile({
+                const res = await updateProfile.mutateAsync({
                     _id: userInfo._id,
                     name,
                     email,
                     password
-                }).unwrap();
+                });
                 dispatch(setCredentials({ ...res }))
                 toast.success('Profile Updated.', { autoClose: 800 })
             } catch (err) {
