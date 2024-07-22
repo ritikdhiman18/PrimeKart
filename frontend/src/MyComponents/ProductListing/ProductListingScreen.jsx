@@ -163,7 +163,7 @@ const ProductListingScreen = () => {
                             )}
                         </ul>
                     </div>
-                    {data?.products?.length <= 16 ?
+                    {data?.products?.length <= 15 ?
                         (
                             <></>
 

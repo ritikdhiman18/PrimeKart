@@ -29,7 +29,7 @@ export function Sidebar() {
     const logoutApiCall = useLogoutMutation();
     const logoutHandler = async () => {
         try {
-            await logoutApiCall().mutateAsync();
+            await logoutApiCall.mutateAsync();
             dispatch(logout());
             navigate('/');
             toast.success("LOGOUT SUCCESSFULL.")

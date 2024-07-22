@@ -18,7 +18,6 @@ const getProductsByQuery = async ({ search, category, minPrice, maxPrice, page }
     if (minPrice) params.append('price[gte]', minPrice);
     if (maxPrice) params.append('price[lt]', maxPrice);
     if (page) params.append('page', page);
-    console.log(`${params.toString()}`);
     const response = await axiosInstance.get(`/api/products?${params.toString()}`);
     return response.data;
 };
