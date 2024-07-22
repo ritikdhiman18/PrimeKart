@@ -1,35 +1,28 @@
-import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
-import { BASE_URL } from '../Reducers/features';
+import axiosInstance from '../config/axiosConfig';
 
 const login = async (data) => {
-    const response = await axios.post(`${BASE_URL}/api/users/auth`, data, {
-        withCredentials: true,
-    });
+    const response = await axiosInstance.post(`/api/users/auth`, data);
     return response.data;
 };
 
 const register = async (data) => {
-    const response = await axios.post(`${BASE_URL}/api/users`, data, {
+    const response = await axiosInstance.post(`/api/users`, data, {
         withCredentials: true,
     });
     return response.data;
 };
 
 const logout = async () => {
-    const response = await axios.post(`${BASE_URL}/api/users/logout`, {}, {
-        withCredentials: true,
-    });
+    const response = await axiosInstance.post(`/api/users/logout`, {});
     return response.data;
 };
 
 const updateUser = async (data) => {
-    const response = await axios.put(`${BASE_URL}/api/users/profile`, data, {
-        withCredentials: true,
-    });
+    const response = await axiosInstance.put(`/api/users/profile`, data);
     return response.data;
 };
-
+// ------------------------------------------------------------------------------------------------------
 export const useLoginMutation = () => useMutation({
     mutationFn: login
 });

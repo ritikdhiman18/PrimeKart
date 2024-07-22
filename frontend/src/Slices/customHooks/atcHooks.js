@@ -1,26 +1,22 @@
-import axios from "axios";
-import { BASE_URL } from "../Reducers/features";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axiosInstance from "../config/axiosConfig";
+
 
 const addCartItem = async (data) => {
-    const res = await axios.post(`${BASE_URL}/api/add-to-cart`, data, {
-        withCredentials: true
-    });
+    const res = await axiosInstance.post(`/api/add-to-cart`, data);
     return res.data;
 };
+
 const updatecart = async (data) => {
-    const res = await axios.post(`${BASE_URL}/api/updateCart`, data, {
-        withCredentials: true
-    });
+    const res = await axiosInstance.post(`/api/updateCart`, data);
     return res.data;
 };
 
 const getCartItems = async () => {
-    const res = await axios.get(`${BASE_URL}/api/cartItems`, {
-        withCredentials: true
-    });
+    const res = await axiosInstance.get(`/api/cartItems`);
     return res.data;
 };
+
 // ---------------------------------------------------------------------------------------------------------
 export const useAddCartItemMutation = () => {
     const queryClient = useQueryClient();
