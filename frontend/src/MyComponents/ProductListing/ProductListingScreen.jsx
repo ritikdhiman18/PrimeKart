@@ -31,18 +31,15 @@ const ProductListingScreen = () => {
         dispatch(setFilters(updatedFilters));
     }, [location.search, dispatch]);
 
-    // Prepare query object
     const queryObject = {
         search: searchQuery,
         ...filters,
     };
 
-    // Fetch data based on query object
     const { data, isError, isLoading } = useGetProductsByQuery(queryObject, {
         skip: !searchQuery && !filters.category
     });
 
-    // Handle page navigation
     const handleNext = () => {
         const updatedFilters = {
             ...filters,

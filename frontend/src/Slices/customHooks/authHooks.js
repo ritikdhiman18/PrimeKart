@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axiosInstance from '../config/axiosConfig';
 
 const login = async (data) => {
@@ -23,15 +23,29 @@ const updateUser = async (data) => {
     return response.data;
 };
 // ------------------------------------------------------------------------------------------------------
-export const useLoginMutation = () => useMutation({
-    mutationFn: login
-});
+export const useLoginMutation = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: login,
+        onSuccess: () => {
+            queryClient.invalidateQueries(['cartItems']);
+        },
+    })
+};
+
 export const useRegisterMutation = () => useMutation({
     mutationFn: register
 });
 export const useLogoutMutation = () => useMutation({
     mutationFn: logout
 });
-export const useUpdateUserMutation = () => useMutation({
-    mutationFn: updateUser
-});
+
+export const useUpdateUserMutation = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: updateUser,
+        onSuccess: () => {
+            queryClient.invalidateQueries(['cartItems']);
+        }
+    })
+};
