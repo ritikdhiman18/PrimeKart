@@ -16,11 +16,11 @@ const AccordionFooter = () => {
                     <AccordionTrigger className="px-2">QUICK LINKS</AccordionTrigger>
                     <AccordionContent className="px-2">
                         <ul className='text-black'>
-                            <li className=''>Women’s Jeans</li>
-                            <li className=''>Men’s T-shirts</li>
-                            <li className=''>Women’s Tops</li>
-                            <li className=''>Footwear</li>
-                            <li className=''>Men’s Jackets</li>
+                            <li className='hover:underline cursor-pointer'>Women’s Jeans</li>
+                            <li className='hover:underline cursor-pointer'>Men’s T-shirts</li>
+                            <li className='hover:underline cursor-pointer'>Women’s Tops</li>
+                            <li className='hover:underline cursor-pointer'>Footwear</li>
+                            <li className='hover:underline cursor-pointer'>Men’s Jackets</li>
                         </ul>
                     </AccordionContent>
                 </AccordionItem>
@@ -28,11 +28,11 @@ const AccordionFooter = () => {
                     <AccordionTrigger className="px-2">ABOUT</AccordionTrigger>
                     <AccordionContent className="px-2">
                         <ul className='text-black'>
-                            <li className=''>Blogs & Stories</li>
-                            <li className=''>PrimeKart Foundation</li>
-                            <li className=''>News</li>
-                            <li className=''>Community</li>
-                            <li className=''>Jobs & Careers</li>
+                            <li className='hover:underline cursor-pointer'>Blogs & Stories</li>
+                            <li className='hover:underline cursor-pointer'>PrimeKart Foundation</li>
+                            <li className='hover:underline cursor-pointer'>News</li>
+                            <li className='hover:underline cursor-pointer'>Community</li>
+                            <li className='hover:underline cursor-pointer'>Jobs & Careers</li>
                         </ul>
                     </AccordionContent>
                 </AccordionItem>
@@ -44,14 +44,14 @@ const AccordionFooter = () => {
                                 <h1>For Customer care</h1>
                                 <div className='flex gap-2 items-center'>
                                     <span><MdAttachEmail /></span>
-                                    <span>customercare@PrimeKart.in</span>
+                                    <span className='hover:underline cursor-pointer'>customercare@PrimeKart.in</span>
                                 </div>
                             </li>
                             <li className='my-2'>
                                 <h1>For Store Queries</h1>
                                 <div className='flex gap-2 items-center'>
                                     <span><IoCall /></span>
-                                    <span>1800-1020-501</span>
+                                    <span className='hover:underline cursor-pointer'>1800-1020-501</span>
                                 </div>
                             </li>
                         </ul>

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+export const BASE_URL = import.meta.env.VITE_BASE_API_URL;
 const initialState = {
     searchQuery: '',
     filters: {

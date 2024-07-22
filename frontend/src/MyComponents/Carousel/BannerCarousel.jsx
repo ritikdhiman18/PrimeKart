@@ -6,10 +6,10 @@ const BannerCarousel = () => {
             <Splide options={{
                 type: 'loop',
                 autoplay: true,
-                drag: 'free',
                 perPage: 1,
                 pagination: false,
                 arrows: false,
+                lazyLoad: "nearby",
                 pauseOnHover: false
             }}>
                 <SplideSlide className="text-sm w-full text-center"><h1>Buy 2 Get Extra 10% OFF</h1></SplideSlide>

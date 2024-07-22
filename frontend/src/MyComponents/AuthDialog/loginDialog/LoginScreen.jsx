@@ -5,36 +5,40 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { setIsSignupOpen, setIsLoginOpen, setLoading } from '../../../Slices/Reducers/features.js'
-import { useLoginMutation } from "../../../Slices/apiSlice.js";
 import { setCredentials } from "../../../Slices/Reducers/authSlice.js";
+import { useLoginMutation } from "@/Slices/customHooks/authHooks.js";
 
 const LoginScreen = () => {
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [login, { isLoading }] = useLoginMutation()
-    const { userInfo } = useSelector((state) => state.auth)
+    const loginMutation = useLoginMutation();
+    const { userInfo } = useSelector((state) => state.auth);
+
     useEffect(() => {
         if (userInfo) {
-            navigate('/')
+            navigate('/');
         }
-    }, [navigate, userInfo])
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    }, [navigate, userInfo]);
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
-            dispatch(setLoading(true))
-            const res = await login({ email, password }).unwrap();
-            dispatch(setCredentials({ ...res }));
-            dispatch(setLoading(false))
-            toast.success("Sign-In sucessfull.")
+            dispatch(setLoading(true));
+            const result = await loginMutation.mutateAsync({ email, password });
+            dispatch(setCredentials(result));
+            dispatch(setLoading(false));
+            toast.success("Sign-In successful.");
             dispatch(setIsLoginOpen(false));
-
         } catch (err) {
-            toast.error("Enter correct details or check server.")
-            dispatch(setLoading(false))
+            toast.error("Enter correct details or check server.");
+            dispatch(setLoading(false));
         }
-    }
+    };
+
     const switchToSignup = () => {
         dispatch(setIsLoginOpen(false));
         dispatch(setIsSignupOpen(true));

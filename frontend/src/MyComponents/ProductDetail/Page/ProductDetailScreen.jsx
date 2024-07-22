@@ -1,23 +1,19 @@
 import { SkeletonCard } from '@/MyComponents/Skeleton/SkeletonCard';
-import { useGetProductQuery, useUpdateReviewsQuery } from '@/Slices/productSlice';
 import { useLocation } from 'react-router-dom';
 import { Rating } from '@smastrom/react-rating'
 import { Separator } from "@/components/ui/separator"
-import { useAddReviewMutation } from "@/Slices/productSlice";
 import toast from 'react-hot-toast';
 import ProductDetailGrid from '../Components/ProductDetail';
 import CustomerReview from '../Components/CustomerReview';
 import { useState } from 'react';
+import { useAddReviewMutation, useGetProductQuery } from '@/Slices/customHooks/productHooks';
 const ProductDetailScreen = () => {
     const location = useLocation();
     const queryId = location.pathname.split("/")[2]
     const [comment, setComment] = useState("");
     const [rating, setRating] = useState(0);
-    const [addReview, { isLoading: isAddingReview }] = useAddReviewMutation();
+    const { mutateAsync: addReview } = useAddReviewMutation();
     const { data, isError, isLoading } = useGetProductQuery(queryId, {
-        skip: !queryId,
-    });
-    const { data: reviewsData, refetch: refetchReviews } = useUpdateReviewsQuery(queryId, {
         skip: !queryId,
     });
 
@@ -30,9 +26,8 @@ const ProductDetailScreen = () => {
         const productId = data.product._id;
         try {
             if (productId && comment && rating) {
-                await addReview({ productId, comment, rating }).unwrap();
+                await addReview({ productId, comment, rating });
                 toast.success("Review Added Successfully.", { autoClose: 800 });
-                refetchReviews();
                 setComment("")
                 setRating("")
             } else {
@@ -44,7 +39,7 @@ const ProductDetailScreen = () => {
     };
     return (
         <>
-            <div className="product-detail-grid grid place-items-center my-4">
+            <div className="product-detail-grid grid place-items-center">
                 {isLoading || data == undefined ? (
                     <SkeletonCard />
                 ) : isError ? (
@@ -53,10 +48,10 @@ const ProductDetailScreen = () => {
                     <div>No product available.</div>
                 ) : data.product && (
                     <div className="flex flex-col md:flex-row lg:flex-row gap-2 lg:w-4/5 h-[35rem] items-center md:items-stretch lg:items-stretch">
-                        <div className="product-image w-1/2 border-2 flex items-center bg-gray-200">
+                        <div className="product-image w-1/2 flex items-center bg-gray-200">
                             <img src={data.product.image[0].url} alt={data.product.name} className='w-full ' />
                         </div>
-                        <div className="product-content w-full border-2 overflow-y-auto p-4">
+                        <div className="product-content w-full overflow-y-auto p-4">
                             {/*  */}
                             <ProductDetailGrid key={data.product._id} product={data.product} />
                             {/*  */}
@@ -71,10 +66,10 @@ const ProductDetailScreen = () => {
                                     </form>
                                     <div className="all-reviews m-2 border-2 flex flex-col gap-2 p-2">
                                         {/*  */}
-                                        {reviewsData === undefined ? (
+                                        {data === undefined ? (
                                             <SkeletonCard />
-                                        ) : reviewsData.reviews && (
-                                            <CustomerReview product={reviewsData.reviews} />
+                                        ) : data.product.reviews && (
+                                            <CustomerReview product={data.product.reviews} />
                                         )}
                                         {/*  */}
                                     </div>

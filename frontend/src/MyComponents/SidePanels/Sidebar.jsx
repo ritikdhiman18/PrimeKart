@@ -15,7 +15,7 @@ import {
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useLogoutMutation } from '../../Slices/apiSlice';
+import { useLogoutMutation } from '../../Slices/customHooks/authHooks';
 import { RxAvatar } from "react-icons/rx";
 import { toast } from 'react-hot-toast';
 import { setIsLoginOpen } from '../../Slices/Reducers/features';
@@ -26,10 +26,10 @@ export function Sidebar() {
     const { userInfo } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [logoutApiCall] = useLogoutMutation();
+    const logoutApiCall = useLogoutMutation();
     const logoutHandler = async () => {
         try {
-            await logoutApiCall().unwrap();
+            await logoutApiCall().mutateAsync();
             dispatch(logout());
             navigate('/');
             toast.success("LOGOUT SUCCESSFULL.")

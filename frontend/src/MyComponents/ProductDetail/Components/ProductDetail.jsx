@@ -7,20 +7,20 @@ import '@smastrom/react-rating/style.css'
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsLoginOpen } from '../../../Slices/Reducers/features';
-import { useAddCartItemMutation } from '../../../Slices/atcSlice';
+import { useAddCartItemMutation } from '../../../Slices/customHooks/atcHooks';
+import { useRef } from 'react';
 
 const ProductDetailGrid = ({ product }) => {
+    const productRef = useRef(null);
     const dispatch = useDispatch();
-    const [addToCart] = useAddCartItemMutation();
+    const { mutateAsync: addToCart } = useAddCartItemMutation();
     const { userInfo } = useSelector((state) => state.auth);
-    const handelATC = (e) => {
+    const handelATC = async (e) => {
         if (userInfo) {
-            const target = e.target;
-            const container = target.closest(".product-content");
-            const productId = container.querySelector(".product-id-value").innerText;
+            const productId = productRef.current.innerText
             if (productId) {
                 const cartItem = { "cartProductId": productId }
-                addToCart(cartItem);
+                await addToCart(cartItem);
                 toast.success("Item Added to Cart.")
             } else {
                 toast.error("Product not Available.")
@@ -36,7 +36,7 @@ const ProductDetailGrid = ({ product }) => {
             <div className="product-name text-3xl font-bold my-2">
                 <h1>{product.name}</h1>
             </div>
-            <div className="product-id">Item-Id: <span className='font-semibold product-id-value'>{product._id}</span></div>
+            <div className="product-id">Item-Id: <span className='font-semibold product-id-value' ref={productRef}>{product._id}</span></div>
             <div className="product-discription my-2">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Assumenda quas nesciunt, est impedit placeat mollitia. Eos quibusdam fuga inventore perferendis deserunt ut, laborum non possimus sed id numquam porro illum.
             </div>
             <div className="product-rating flex gap-2 items-center">

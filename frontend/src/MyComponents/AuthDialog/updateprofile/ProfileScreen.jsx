@@ -3,7 +3,7 @@ import { Button, Form, FormGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from 'react-hot-toast';
 import { setCredentials } from "../../../Slices/Reducers/authSlice";
-import { useUpdateUserMutation } from "../../../Slices/apiSlice";
+import { useUpdateUserMutation } from "../../../Slices/customHooks/authHooks";
 
 const ProfileScreen = () => {
     const dispatch = useDispatch();

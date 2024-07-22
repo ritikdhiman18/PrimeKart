@@ -1,25 +1,28 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TbShoppingBagPlus } from "react-icons/tb";
-import { FiHeart } from "react-icons/fi";
+import { FiHeart, FiCheck } from "react-icons/fi";
 import toast from 'react-hot-toast';
 import { TbGridScan } from "react-icons/tb";
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsLoginOpen } from '../../Slices/Reducers/features';
-import { useAddCartItemMutation } from '../../Slices/atcSlice';
+import { useAddCartItemMutation } from '../../Slices/customHooks/atcHooks';
 
 
 const ProductCard = ({ product }) => {
+    const productRef = useRef(null);
     const dispatch = useDispatch();
-    const [addToCart] = useAddCartItemMutation();
+    const { mutateAsync: addToCart } = useAddCartItemMutation();
     const { userInfo } = useSelector((state) => state.auth);
-    const handelATC = (e) => {
+    const [itemAdded, setItemAdded] = useState(false);
+    const handelATC = async () => {
         if (userInfo) {
-            const target = e.target;
-            const productId = target.closest("li").getAttribute("data-product-id");
+            const productId = productRef.current.getAttribute("data-product-id");
             if (productId) {
                 const cartItem = { "cartProductId": productId }
-                addToCart(cartItem);
+                await addToCart(cartItem);
+                setItemAdded(true);
+                setTimeout(() => setItemAdded(false), 1500);
                 toast.success("Item Added to Cart.")
             } else {
                 toast.error("Product not Available.")
@@ -30,7 +33,7 @@ const ProductCard = ({ product }) => {
         }
     }
     return (
-        <div key={product._id} data-product-id={product._id} className="Product-card bg-[#f3f3f3] rounded-md relative overflow-hidden border-black border-b-2 flex flex-col flex-1">
+        <div ref={productRef} key={product._id} data-product-id={product._id} className="Product-card bg-[#f3f3f3] rounded-md relative overflow-hidden border-black_100 border-b-2 flex flex-col flex-1">
             <Link to={product.href} className='flex flex-col flex-1 items-center'>
                 <div className="Product-Image flex justify-center w-[200px]">
                     <img src={product.image[0].url} alt={product.name} />
@@ -59,20 +62,21 @@ const ProductCard = ({ product }) => {
                         )}
                     </div>
                     {/* ATC */}
-                    <button onClick={handelATC} className='hidden lg:block bg-black text-white text-md p-2 rounded-full font-semibold'>
-                        <TbShoppingBagPlus />
+                    <button onClick={handelATC} className={`hidden lg:block ${itemAdded ? 'bg-green-600 font-extrabold' : 'bg-black_100 font-extrabold'} text-white text-md p-2 rounded-full`}>
+                        {!itemAdded && <TbShoppingBagPlus />}
+                        {itemAdded && <FiCheck className="animate-pulse" />}
                     </button>
-                    <button onClick={handelATC} className='flex lg:hidden bg-black text-white text-md p-2 w-full items-center gap-2 justify-center rounded-sm font-semibold'>
-                        <TbShoppingBagPlus /> <span>Add to cart</span>
+                    <button onClick={handelATC} className={`flex lg:hidden ${itemAdded ? 'bg-green-600 font-extrabold' : 'bg-black_100 font-extrabold'} text-white text-md p-2 w-full items-center gap-2 justify-center rounded-sm font-semibold`}>
+                        {!itemAdded && <><TbShoppingBagPlus /><span> Add to cart</span></>}
+                        {itemAdded && <FiCheck className="animate-pulse" />}
                     </button>
                     {/* ATC */}
                 </div>
             </div>
-            <div className="product-favorite absolute top-2 right-2 p-2 rounded-full hover:bg-black hover:text-black_100">
+            <div className="product-favorite absolute top-2 right-2 p-2 rounded-full hover:bg-black_100 hover:text-white">
                 <span className=''><FiHeart /></span>
             </div>
-
-        </div>
+        </div >
     );
 };
 

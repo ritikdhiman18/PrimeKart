@@ -112,7 +112,7 @@ const createProductReview = asyncHandler(async (req, res) => {
     product.reviews.forEach(rev => {
         avg += rev.rating
     })
-    product.ratings = avg / product.reviews.length;
+    product.ratings = parseFloat((avg / product.reviews.length).toFixed(1));
     await product.save({ validateBeforeSave: false });
     res.status(200).json({
         success: true,

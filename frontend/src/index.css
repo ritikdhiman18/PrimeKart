@@ -4,6 +4,13 @@
 @tailwind utilities;
   
   @layer base {
+    * {
+      @apply border-border;
+    }
+    body {
+      @apply bg-background text-foreground;
+      font-family: "Chakra Petch";
+    }
     :root {
       --background: 0 0% 100%;
       --foreground: 222.2 84% 4.9%;
@@ -67,44 +74,6 @@
     }
   }
 
-  @layer base {
-    * {
-      @apply border-border;
-    }
-    body {
-      @apply bg-background text-foreground;
-      font-family: "Chakra Petch";
-    }
-  }
-  .embla {
-    overflow: hidden;
-    margin-right:2rem;
-    margin-left:2rem;
-    --slide-spacing-lg: 2rem;
-    --slide-size-lg: calc(100% / 1);
-    --slide-size:calc(100% / 1);
-    --slide-size-sm:calc(100% / 2);
-    --slide-size-lg: calc(100% / 4);
-  }
-  .embla__container {
-    backface-visibility: hidden;
-    display: flex;
-    touch-action: pan-y pinch-zoom;
-  }
-  .embla__slide {
-    min-width: 0;
-    flex: 0 0 var(--slide-size);
-  }
-  @media (min-width: 750px) {
-    .embla__slide {
-      flex: 0 0 var(--slide-size-sm);
-    }
-  }
-  @media (min-width: 1200px) {
-    .embla__slide {
-      flex: 0 0 var(--slide-size-lg);
-    }
-  }
   #wifi-loader {
     --background: #62abff;
     --front-color:#001b44;

@@ -1,45 +1,55 @@
 import { FiFilter } from "react-icons/fi";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Slider } from "@/components/ui/slider"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useDispatch, useSelector } from 'react-redux';
-import { useGetProductsByQueryQuery } from '@/Slices/productSlice';
 import { setFilters } from '../../Slices/Reducers/features';
-import { useEffect, useState } from 'react';
 import ProductCard from '../ProductCard/productCard';
 import { SkeletonCard } from '../Skeleton/SkeletonCard';
 import Title from "../Title/Title";
+import { useGetProductsByQuery } from "@/Slices/customHooks/productHooks";
+import { useEffect } from "react";
 
 const ProductListingScreen = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
     const filters = useSelector((state) => state.search.filters);
     const searchQuery = useSelector((state) => state.search.searchQuery);
-    const [isFetching, setIsFetching] = useState(false);
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const category = params.get('category') || '';
+        const page = parseInt(params.get('page'), 10) || 1;
+
+        const updatedFilters = {
+            ...filters,
+            category,
+            page,
+        };
+
+        dispatch(setFilters(updatedFilters));
+    }, [location.search, dispatch]);
+
+    // Prepare query object
     const queryObject = {
         search: searchQuery,
         ...filters,
     };
-    const { data, isError, isLoading } = useGetProductsByQueryQuery(queryObject, {
-        skip: !searchQuery || !isFetching,
+
+    // Fetch data based on query object
+    const { data, isError, isLoading } = useGetProductsByQuery(queryObject, {
+        skip: !searchQuery && !filters.category
     });
 
-    useEffect(() => {
-        const fetchWithDelay = setTimeout(() => {
-            setIsFetching(true);
-        }, 0);
-        return () => clearTimeout(fetchWithDelay);
-    }, [searchQuery]);
-
-
+    // Handle page navigation
     const handleNext = () => {
         const updatedFilters = {
             ...filters,
             page: filters.page + 1,
         };
         dispatch(setFilters(updatedFilters));
-        const url = `/products?search=${searchQuery}&page=${updatedFilters.page}`;
+        const url = `/products?${filters.category ? `category=${filters.category}` : `search=${searchQuery}`}&page=${updatedFilters.page}`;
         navigate(url);
     };
 
@@ -50,8 +60,7 @@ const ProductListingScreen = () => {
         };
         if (updatedFilters.page >= 1) {
             dispatch(setFilters(updatedFilters));
-
-            const url = `/products?search=${searchQuery}&page=${updatedFilters.page}`;
+            const url = `/products?${filters.category ? `category=${filters.category}` : `search=${searchQuery}`}&page=${updatedFilters.page}`;
             navigate(url);
         }
     };
@@ -63,7 +72,7 @@ const ProductListingScreen = () => {
             </Title>
             <div className="search-Listing flex w-full gap-2 px-2">
                 {/* /////////////////facet-grid/////////////////////////// */}
-                <div className="hidden lg:block facet-container w-96 border-gray-400 border-2">
+                <div className="hidden lg:block facet-container w-96 border-gray-400 border-1 rounded-md">
                     <div className='flex my-2 items-center justify-center font-bold text-xl gap-1'>
                         <span><FiFilter /></span>
                         <span>Filters</span>
@@ -143,8 +152,8 @@ const ProductListingScreen = () => {
                 </div>
                 {/* /////////////////search-grid/////////////////////////// */}
                 <div className=" w-full ">
-                    <div className="search-results border-gray-400 border-2">
-                        <ul className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-2 gap-2 lg:gap-4 min-h-44">
+                    <div className="search-results">
+                        <ul className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 lg:gap-4 min-h-44">
                             {isLoading || data == undefined ? (
                                 [...Array(4)].map((_, index) => <SkeletonCard key={index} />)
                             ) : isError ? (
@@ -157,12 +166,19 @@ const ProductListingScreen = () => {
                             )}
                         </ul>
                     </div>
-                    <div className="pagination flex justify-center gap-10 mt-2 py-2 border-gray-400 border-2">
-                        <button className='bg-black_100 px-4 py-2 text-white rounded-md' onClick={handlePrevious}>Previous</button>
-                        <button className='bg-black_100 px-10 py-2 text-white rounded-md' onClick={handleNext}>Next</button>
-                    </div>
-                </div>
-            </div>
+                    {data?.products?.length <= 16 ?
+                        (
+                            <></>
+
+                        ) : (
+                            <div className="pagination flex justify-center gap-10 mt-2 py-2">
+                                <button className='bg-black_100 px-4 py-2 text-white rounded-md' onClick={handlePrevious}>Previous</button>
+                                <button className='bg-black_100 px-10 py-2 text-white rounded-md' onClick={handleNext}>Next</button>
+                            </div>
+                        )
+                    }
+                </div >
+            </div >
         </>
     )
 }
